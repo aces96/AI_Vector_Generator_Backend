@@ -11,15 +11,15 @@ const userSchema = new mongoose.Schema({
         unique: true,
     },
     history: [{ type: mongoose.Schema.Types.ObjectId, ref: 'History' }],
-    google_id:{
+    account_id:{
         type: String
     },
-    secret: {
-        type: String
-    },
-    credits: {
+    tokens: {
         type: Number,
         default: 0
+    },
+    image: {
+        type: String
     }
 });
 

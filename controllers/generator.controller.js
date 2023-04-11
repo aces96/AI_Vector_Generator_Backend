@@ -7,7 +7,7 @@ const dotenv = require('dotenv').config();
 
 
 exports.generateVectors = async (req,res)=>{
-    const basePrompt=`${req.body.prompt},(((lineart))),((low detail)),(simple),high contrast,sharp,2 bit, ((technical vector graphic))`
+    const basePrompt=`${req.body.prompt},(((lineart))),((low detail)),(simple),high contrast,sharp,2 bit`
     const baseNegativePrompt="(((text))),((color)),(shading),background,noise,dithering,gradient,detailed,out of frame,ugly,error,Illustration, watermark"
     const headers = {
         'Content-Type': 'application/json',
@@ -21,15 +21,14 @@ exports.generateVectors = async (req,res)=>{
             "width": "512",
             "height": "512",
             "samples": "3",
-            "num_inference_steps": "20",
+            "num_inference_steps": "30",
             "seed": null,
             "guidance_scale": 7.5,
-           "safety_checker":"yes",
             "webhook": null,
             "track_id": null
         }, headers)
 
-        console.log(generateVector.data.ouput);
+        console.log(generateVector);
 
 
         res.send(generateVector.data.output)

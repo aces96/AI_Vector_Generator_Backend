@@ -2,12 +2,17 @@ const User = require('../models/user.model')
 const History = require('../models/history.model')
 const axios = require('axios')
 const dotenv = require('dotenv').config();
+const potrace = require('potrace');
+const  https = require('https');
+const fs = require('fs');
+
+
 
 
 
 
 exports.generateVectors = async (req,res)=>{
-    const basePrompt=`${req.body.prompt},(((lineart))),((low detail)),(simple),high contrast,sharp,2 bit`
+    const basePrompt=`${req.body.prompt},(((lineart))),((low detail)),(simple),high contrast,sharp,2 bit, black or white, white background`
     const baseNegativePrompt="(((text))),((color)),(shading),background,noise,dithering,gradient,detailed,out of frame,ugly,error,Illustration, watermark"
     const headers = {
         'Content-Type': 'application/json',
@@ -20,18 +25,38 @@ exports.generateVectors = async (req,res)=>{
             "negative_prompt": baseNegativePrompt,
             "width": "512",
             "height": "512",
-            "samples": "3",
-            "num_inference_steps": "30",
+            "samples": "1",
+            "num_inference_steps": "20",
             "seed": null,
             "guidance_scale": 7.5,
+           "safety_checker":"no",
             "webhook": null,
             "track_id": null
         }, headers)
 
-        console.log(generateVector);
+        console.log(generateVector.data.output);
+
+        if(generateVector.data.output.length > 0){
+            const client = await generateVector.data.output[0].startsWith('https') ? https : http;
+            await client.get(generateVector.data.output[0], (response) => {
+                const stream = fs.createWriteStream('image.png');
+                response.pipe(stream);
+                stream.on('finish', () => {
+                  console.log(`Saved image.png to local disk`);
+                });
+              });
+
+            await potrace.trace('../image.png', function(err, svg) {
+                if (err) throw err;
+                fs.writeFileSync('./output.svg', svg);
+              });
+              res.send("svg")
+
+        }else {
+            res.send(generateVector.data)
+        }
 
 
-        res.send(generateVector.data.output)
 
         
     } catch (error) {

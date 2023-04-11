@@ -6,6 +6,7 @@ const session = require('express-session')
 const cors = require('cors');
 const strategie = require("./auth/passport.linkedin")
 const googleStategie = require('./auth/passport.google')
+const facebookStategie = require('./auth/passport.facebook')
 const GenerateVectorRouter = require('./router/generateRouter')
 // const passport = require("passport");
 
@@ -37,6 +38,7 @@ app.use(express.urlencoded({extended:true}))
 // require("./auth/google.auth")(passport);
 app.use("/auth", require('./router/linkedin.auth'))
 app.use("/auth", require('./router/google.auth'))
+app.use("/auth", require('./router/facebook.auth'))
 
 
 

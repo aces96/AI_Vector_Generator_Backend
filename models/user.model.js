@@ -7,8 +7,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: [true, 'A User must have an email'],
-        unique: true,
+        default: ""
     },
     history: [{ type: mongoose.Schema.Types.ObjectId, ref: 'History' }],
     account_id:{
@@ -19,7 +18,8 @@ const userSchema = new mongoose.Schema({
         default: 0
     },
     image: {
-        type: String
+        type: String,
+        default: "https://www.freeiconspng.com/img/23479"
     }
 });
 

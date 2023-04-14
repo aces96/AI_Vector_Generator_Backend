@@ -5,11 +5,8 @@ const dotenv = require('dotenv').config();
 const potrace = require('potrace');
 const  https = require('https');
 const fs = require('fs');
-
-
-
-
-
+const { randomBytes } = require('crypto');
+const {reduceUserTokens} = require('./user.controller')
 
 exports.generateVectors = async (req,res)=>{
     const basePrompt=`${req.body.prompt},(((lineart))),((low detail)),(simple),high contrast,sharp,2 bit, black or white, white background`
@@ -25,41 +22,67 @@ exports.generateVectors = async (req,res)=>{
             "negative_prompt": baseNegativePrompt,
             "width": "512",
             "height": "512",
-            "samples": "1",
+            "samples": "3",
             "num_inference_steps": "20",
             "seed": null,
             "guidance_scale": 7.5,
            "safety_checker":"no",
-            "webhook": null,
+            "webhook": "http://localhost:8080/api/generateVector",
             "track_id": null
         }, headers)
 
+        
+
         console.log(generateVector.data.output);
 
+        let imgs = [];
         if(generateVector.data.output.length > 0){
-            const client = await generateVector.data.output[0].startsWith('https') ? https : http;
-            await client.get(generateVector.data.output[0], (response) => {
-                const stream = fs.createWriteStream('image.png');
-                response.pipe(stream);
-                stream.on('finish', () => {
-                  console.log(`Saved image.png to local disk`);
+            const history = new History({prompt: req.body.prompt, images: generateVector.data.output, user: req.body.user})
+            const hstr = await history.save();
+            const promises = generateVector.data.output.map((e, index) => {
+                const client =  e.startsWith('https') ? https : http;
+                return new Promise((resolve, reject) => {
+                    client.get(e, async (response) => {
+                        const stream = await fs.createWriteStream(`img${index}.png`);
+                        await response.pipe(stream);
+                        await stream.on('finish',   () => {
+                            console.log(`Saved image.png to local disk`);
+                            potrace.trace(`img${index}.png`, function(err, svg) {
+                                if (err){
+                                    reject(err);
+                                }else{
+                                    console.log('yoooooooooow', svg);
+                                    fs.unlink(`img${index}.png`, (err, res)=>{
+                                        if(err) reject(err);
+                                        console.log('image delete', res);
+                                    });
+                                    imgs.push(svg);
+                                    resolve();
+                                }
+                            });
+                        });
+                    });
                 });
-              });
+            });
 
-            await potrace.trace('../image.png', function(err, svg) {
-                if (err) throw err;
-                fs.writeFileSync('./output.svg', svg);
-              });
-              res.send("svg")
-
-        }else {
-            res.send(generateVector.data)
+            Promise.all(promises)
+                .then(async () => {
+                    const userUpdate = await reduceUserTokens(req.body.user)
+                    res.status(200).json({
+                        history: hstr,
+                        images: imgs,
+                        user: userUpdate
+                    });
+                    
+                })
+                .catch((err) => {
+                    console.log(err);
+                    res.status(400).send(err);
+                });
+        } else {
+            res.send(generateVector.data);
         }
-
-
-
-        
     } catch (error) {
-        res.send(error)
+        res.send(error);
     }
 }

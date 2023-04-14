@@ -11,7 +11,7 @@ passport.authenticate("linkedin", {
     failureRedirect: 'http://localhost/5173/login'
 }), (req,res)=>{
     console.log('uuuuuusssssseeerr', req.user);
-    res.redirect(`http://localhost:5173/success?name=${req.user.name}&id=${req.user.account_id}&picture=${req.user.image}&tokens=${req.user.tokens}`);
+    res.redirect(`http://localhost:5173/success?name=${req.user.name}&id=${req.user.id}&picture=${req.user.image}&tokens=${req.user.tokens}`);
 })
 
 router.get("/login/success", (req)=>{

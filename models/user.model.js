@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'A User must have a name']
     },
     email: {
         type: String,
@@ -19,9 +18,14 @@ const userSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        default: "https://www.freeiconspng.com/img/23479"
-    }
-});
+        default: "https://i.stack.imgur.com/l60Hf.png"
+    },
+    bundle: {
+        type: String,
+        default: 'none'
+    },
+    
+}, {unique: true});
 
 
 const User = mongoose.model('User', userSchema);

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment')
 
 const historySchema = new mongoose.Schema({
     prompt: {
@@ -8,6 +9,10 @@ const historySchema = new mongoose.Schema({
         type: [String],
     },
     user: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    createdAt: {
+        type: String,
+        default: moment().format('MMMM Do YYYY, h:mm:ss a')
+    }
 });
 
 

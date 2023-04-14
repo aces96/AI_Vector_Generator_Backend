@@ -8,6 +8,10 @@ const strategie = require("./auth/passport.linkedin")
 const googleStategie = require('./auth/passport.google')
 const facebookStategie = require('./auth/passport.facebook')
 const GenerateVectorRouter = require('./router/generateRouter')
+const HistoryRouter = require('./router/history.router')
+const UserRouter = require('./router/user.router')
+const stripeRouter = require('./router/stripe.router')
+
 // const passport = require("passport");
 
 const app = express();
@@ -43,6 +47,10 @@ app.use("/auth", require('./router/facebook.auth'))
 
 
 app.use('/api', GenerateVectorRouter)
+app.use('/api', HistoryRouter)
+app.use('/api', UserRouter)
+app.use('/api', stripeRouter)
+
 
 
 

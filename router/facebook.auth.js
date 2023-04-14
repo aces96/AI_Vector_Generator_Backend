@@ -11,7 +11,7 @@ router.get('/facebook/callback',
   function(req, res) {
     console.log("heeeeeey", req.user);
     // Successful authentication, redirect home.
-    res.redirect(`http://localhost:5173/success?id=${req.user.account_id}&name=${req.user.name}&tokens=${req.user.tokens}&image=${req.user.image}`);
+    res.redirect(`http://localhost:5173/success?id=${req.user.id}&name=${req.user.name}&tokens=${req.user.tokens}&image=${req.user.image}`);
   });
 
 

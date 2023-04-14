@@ -22,7 +22,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
                 name: profile.displayName,
                 email: profile.emails[0].value,
                 account_id: profile.id,
-                image: profile.photos[2].value,
+                image: profile.photos[0].value,
             };
 
             const updateUser = await User.findOneAndUpdate({_id: user.id}, newUserData, {new: true}).then((result)=>{

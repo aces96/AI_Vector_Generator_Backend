@@ -15,7 +15,7 @@ passport.deserializeUser((user, done)=>{
 passport.use(new LinkedInStrategy({
   clientID: process.env.LINKEDIN_KEY,
   clientSecret: process.env.LINKEDIN_SECRET,
-  callbackURL: "http://localhost:8080/auth/linkedin/callback",
+  callbackURL: "https://starfish-app-o44bp.ondigitalocean.app/auth/linkedin/callback",
   scope: ['r_emailaddress', 'r_liteprofile'],
 },
  async function(accessToken, refreshToken, profile, done) {

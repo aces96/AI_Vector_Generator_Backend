@@ -20,7 +20,7 @@ passport.serializeUser(function (user, done) {
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:8080/auth/facebook/callback"
+    callbackURL: "https://starfish-app-o44bp.ondigitalocean.app/auth/facebook/callback"
   },
   async function(accessToken, refreshToken, profile, cb) {
     const user = await User.findOne({ account_id: profile.id });

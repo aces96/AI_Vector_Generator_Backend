@@ -8,10 +8,10 @@ router.get('/linkedin', passport.authenticate('linkedin', {state: 'LSKDFJ'}))
 
 router.get('/linkedin/callback',
 passport.authenticate("linkedin", {
-    failureRedirect: 'https://urchin-app-gbing.ondigitalocean.app/login'
+    failureRedirect: 'https://cncvectorlab.com/login'
 }), (req,res)=>{
     console.log('uuuuuusssssseeerr', req.user);
-    res.redirect(`https://urchin-app-gbing.ondigitalocean.app/success?name=${req.user.name}&id=${req.user.id}&picture=${req.user.image}&tokens=${req.user.tokens}`);
+    res.redirect(`https://cncvectorlab.com/success?name=${req.user.name}&id=${req.user.id}&picture=${req.user.image}&tokens=${req.user.tokens}`);
 })
 
 router.get("/login/success", (req)=>{

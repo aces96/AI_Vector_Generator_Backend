@@ -7,12 +7,12 @@ router.get('/google',
   passport.authenticate('google', { scope: ['profile','email'] }));
 
 router.get('/google/callback', 
-  passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }),
+  passport.authenticate('google', { failureRedirect: 'https://urchin-app-gbing.ondigitalocean.app/login' }),
   function(req, res) {
     console.log(req.user);
     // Successful authentication, redirect home.
     
-    res.redirect(`http://localhost:5173/success?email=${req.user.email}&name=${req.user.name}&image=${req.user.image}&id=${req.user.id}&tokens=${req.user.tokens}`);
+    res.redirect(`https://urchin-app-gbing.ondigitalocean.app/success?email=${req.user.email}&name=${req.user.name}&image=${req.user.image}&id=${req.user.id}&tokens=${req.user.tokens}`);
 });
 
 

@@ -37,8 +37,7 @@ exports.generateVectors = async (req,res)=>{
 
         let imgs = [];
         if(generateVector.data.output.length > 0){
-            const history = new History({prompt: req.body.prompt, images: generateVector.data.output, user: req.body.user})
-            const hstr = await history.save();
+                let hst
             const promises = generateVector.data.output.map((e, index) => {
                 const client =  e.startsWith('https') ? https : http;
                 return new Promise((resolve, reject) => {
@@ -51,7 +50,11 @@ exports.generateVectors = async (req,res)=>{
                                 if (err){
                                     reject(err);
                                 }else{
+
                                     console.log('yoooooooooow', svg);
+                                    const history = new History({prompt: req.body.prompt, images: svg, user: req.body.user})
+                                    const hstr =  history.save();
+                                    hst = hstr
                                     fs.unlink(`img${index}.png`, (err, res)=>{
                                         if(err) reject(err);
                                         console.log('image delete', res);
@@ -69,7 +72,7 @@ exports.generateVectors = async (req,res)=>{
                 .then(async () => {
                     const userUpdate = await reduceUserTokens(req.body.user)
                     res.status(200).json({
-                        history: hstr,
+                        history: hst,
                         images: imgs,
                         user: userUpdate
                     });

@@ -15,6 +15,8 @@ exports.generateVectors = async (req,res)=>{
         'Content-Type': 'application/json',
     }
 
+    let daata = []
+
     try {
         const generateVector = await axios.post("https://stablediffusionapi.com/api/v3/text2img", {
             "key": process.env.STABLE_DIFFUSION_KEY,
@@ -33,7 +35,7 @@ exports.generateVectors = async (req,res)=>{
 
         
 
-        console.log(generateVector.data.output);
+        // console.log(generateVector.data.output);
 
         let imgs = [];
         if(generateVector.data.output.length > 0){
@@ -52,9 +54,7 @@ exports.generateVectors = async (req,res)=>{
                                 }else{
 
                                     console.log('yoooooooooow', svg);
-                                    const history = new History({prompt: req.body.prompt, images: svg, user: req.body.user})
-                                    const hstr =  history.save();
-                                    hst = hstr
+                                    daata.push(svg)
                                     fs.unlink(`img${index}.png`, (err, res)=>{
                                         if(err) reject(err);
                                         console.log('image delete', res);
@@ -70,6 +70,8 @@ exports.generateVectors = async (req,res)=>{
 
             Promise.all(promises)
                 .then(async () => {
+                    const history = new History({prompt: req.body.prompt, images: daata, user: req.body.user})
+                    const hstr =  await history.save();
                     const userUpdate = await reduceUserTokens(req.body.user)
                     res.status(200).json({
                         history: hst,

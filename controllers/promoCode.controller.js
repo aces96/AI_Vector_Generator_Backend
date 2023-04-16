@@ -90,12 +90,14 @@ exports.checkPromoCode = async (req,res)=>{
                         })
                     }else{
                         res.status(400).json({
-                            done: false
+                            done: false,
+                            message: 1
                         })
                     }
             }else {
                 res.status(400).json({
-                    done: false
+                    done: false,
+                    message: 2
                 })
             }
 

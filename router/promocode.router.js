@@ -10,7 +10,7 @@ router.route('/addPromocode')
 router.route('/getPromocode')
         .post(getAllPromoCode)
 
-router.route('/getPromocode')
+router.route('/deletePromocode')
         .post(deletePromoCode)
 
 router.route('/checkPromocode')

@@ -83,9 +83,10 @@ exports.checkPromoCode = async (req,res)=>{
                 const updateUser = await User.findOneAndUpdate({name: req.body.name}, {tokens: user.tokens+5})
                     if(updateUser){
                         const removePromo = await PromoCode.findOneAndRemove({code: req.body.code})
+                        const user = await User.findOne({name: req.body.name})
                         res.status(200).json({
                             done: true,
-                            user: updateUser
+                            user: user
                         })
                     }else{
                         res.status(400).json({

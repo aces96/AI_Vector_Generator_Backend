@@ -23,3 +23,17 @@ exports.getAdmin = async (req, res)=>{
         res.send(error)
     }
 }
+
+
+exports.addAdmin = async (req,res)=>{
+    try {
+        const admin = new Admin({username: req.body.username, password: req.body.password})
+        const save = await admin.save()
+
+        res.json({
+            user:save
+        })
+    } catch (error) {
+        res.send(error)
+    }
+}

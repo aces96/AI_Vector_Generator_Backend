@@ -11,6 +11,7 @@ const GenerateVectorRouter = require('./router/generateRouter')
 const HistoryRouter = require('./router/history.router')
 const UserRouter = require('./router/user.router')
 const stripeRouter = require('./router/stripe.router')
+const promoCodeRouter = require('./router/promocode.router')
 
 // const passport = require("passport");
 
@@ -50,6 +51,7 @@ app.use('/api', GenerateVectorRouter)
 app.use('/api', HistoryRouter)
 app.use('/api', UserRouter)
 app.use('/api', stripeRouter)
+app.use('/api', promoCodeRouter)
 
 
 

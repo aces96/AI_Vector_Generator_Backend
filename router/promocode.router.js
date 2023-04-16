@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {addPromoCode, getAllPromoCode, deletePromoCode} = require('../controllers/promoCode.controller')
+const {addPromoCode, getAllPromoCode, deletePromoCode, checkPromoCode} = require('../controllers/promoCode.controller')
 
 
 
@@ -12,6 +12,9 @@ router.route('/getPromocode')
 
 router.route('/getPromocode')
         .post(deletePromoCode)
+
+router.route('/checkPromocode')
+        .post(checkPromoCode)
 
 
 module.exports = router

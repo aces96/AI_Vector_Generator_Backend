@@ -12,6 +12,7 @@ const HistoryRouter = require('./router/history.router')
 const UserRouter = require('./router/user.router')
 const stripeRouter = require('./router/stripe.router')
 const promoCodeRouter = require('./router/promocode.router')
+const adminRouter = require('./router/admin.router')
 
 // const passport = require("passport");
 
@@ -52,6 +53,7 @@ app.use('/api', HistoryRouter)
 app.use('/api', UserRouter)
 app.use('/api', stripeRouter)
 app.use('/api', promoCodeRouter)
+app.use('/api', adminRouter)
 
 
 

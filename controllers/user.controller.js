@@ -10,10 +10,11 @@ exports.updateUserTokens = async (req, res)=>{
 
         if (user) {
             const updateUser = await User.findOneAndUpdate({_id: req.body.id}, {tokens: user.tokens+req.body.tokens, bundle: req.body.bundle})
+            const user = await User.findById(req.body.id)
                 if (updateUser) {
                     res.status(200).json({
                         message: true,
-                        user: updateUser
+                        user: user
                     })
                     
                 }else {
